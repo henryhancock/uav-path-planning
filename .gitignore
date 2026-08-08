@@ -1,0 +1,16 @@
+__pycache__/
+.venv/
+venv/
+.vscode/
+.DS_Store
+
+# data
+data/
+*.geojson
+*.gdb/
+*.tif
+*.zip
+
+# outputs
+figures/
+*.png
