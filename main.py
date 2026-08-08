@@ -1,42 +1,18 @@
-import numpy as np
 from shapely.geometry import Polygon
-from skimage.morphology import skeletonize
-from skimage import data
 import matplotlib.pyplot as plt
 from skimage.morphology import medial_axis
-from skimage.util import invert
-import rasterio.features
 from sine_river import sin_river
+from rasterize import poly_to_raster
 
-
-# --- geometry ---
-center, boundary = sin_river()
-sin_poly = Polygon(boundary)
-
-minx, miny, maxx, maxy = sin_poly.bounds
-width_meters = maxx - minx
-height_meters = maxy - miny
-
+#globals, pixel size = resolution, pad = border thickness
 pixel_size = 1.0 # meters
 pad = 10 #pixels
 
-grid_width = int(np.ceil(width_meters /  pixel_size))
-grid_height = int(np.ceil(height_meters /  pixel_size))
 
-#maps x,y to pixels
-transform = rasterio.transform.from_bounds(
-    minx, miny, maxx, maxy, grid_width, grid_height
-)
+center, boundary = sin_river()
+sin_poly = Polygon(boundary)
 
-#reads map and plots
-raster_mask = rasterio.features.rasterize(
-    [sin_poly],
-    out_shape=(grid_height, grid_width),
-    transform=transform,
-    fill=0,
-    default_value=1,
-    dtype=np.uint8
-)
+raster_mask,transform = poly_to_raster(sin_poly,pixel_size,pad)
 
 #medial axis returns binary skeleton + distance heat map
 skel_line, distance_map = medial_axis(raster_mask, return_distance=True)
