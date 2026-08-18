@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from skimage.morphology import medial_axis
 from sine_river import sin_river
 from rasterize import poly_to_raster
+from geotester import load_river_polygon
 
 #globals, pixel size = resolution, pad = border thickness
 pixel_size = 1.0 # meters
@@ -11,8 +12,9 @@ pad = 10 #pixels
 
 center, boundary = sin_river()
 sin_poly = Polygon(boundary)
+riv_poly = load_river_polygon("fox_snippet.geojson")
 
-raster_mask,transform = poly_to_raster(sin_poly,pixel_size,pad)
+raster_mask,transform = poly_to_raster(riv_poly,pixel_size,pad)
 
 #medial axis returns binary skeleton + distance heat map
 skel_line, distance_map = medial_axis(raster_mask, return_distance=True)
