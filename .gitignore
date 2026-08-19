@@ -13,4 +13,4 @@ data/
 
 # outputs
 figures/
-*.png
+# *.png
