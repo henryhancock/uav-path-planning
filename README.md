@@ -13,6 +13,7 @@ Coverage path planning for a fixed-wing survey UAV flying curvilinear river corr
 6. Time-parameterize the planned path into a reference trajectory and simulate a vehicle flying it with a path-following guidance law, measuring cross-track error.
 
 ![Pipeline stages: raster mask, distance map, medial-axis centerline](docs/DemoImage1.png)
+
 ## Vehicle model
 
 Parameters follow a **senseFly eBee X** with an **Aeria X** camera:
@@ -49,15 +50,16 @@ Minimum turn radius is derived from the cruise speed and bank angle limit.
 
 ## Requirements
 
-Python 3.10+, with:
+Python 3.13+, with:
 
 ```
 geopandas==1.1.4
-matplotlib==3.11.1
-numpy==2.5.2
+matplotlib==3.10.6
+numpy==2.2.6
 rasterio==1.5.1
-Shapely==2.1.2
-skimage==0.0
+scikit-image==0.26.0
+scipy==1.16.1
+shapely==2.1.2
 ```
 
 ## Usage
