@@ -1,0 +1,48 @@
+import networkx as nx
+import numpy as np
+
+
+def find_longest_skeleton_path(skeleton, use_euclidean=True):
+  # use_euclidean , if true hypots have weight 1.41, if false weighted as 1,0
+  graph = nx.Graph()
+  rows, cols = skeleton.shape
+  nz_rows, nz_cols = np.nonzero(skeleton)
+  pixel_set = set(zip(nz_rows, nz_cols)) #set of xy tuples
+
+  for r, c in pixel_set:
+    graph.add_node((r, c))
+    # only forward / down to avoid repeats)
+    for dr, dc in [(0, 1), (1, -1), (1, 0), (1, 1)]:
+      nr, nc = r + dr, c + dc
+      if (nr, nc) in pixel_set:
+        weight = np.hypot(dr, dc) if use_euclidean else 1.0
+        graph.add_edge((r, c), (nr, nc), weight=weight)
+
+  endpoints = [node for node, degree in graph.degree() if degree <= 1]
+
+  if not endpoints:
+    # pick random if its a loop
+    endpoints = list(graph.nodes())[:1]
+
+  max_length = -1.0
+  longest_path = []
+
+  for i in range(len(endpoints)):
+    for j in range(i + 1, len(endpoints)):
+      try:
+        path = nx.shortest_path(
+            graph, source=endpoints[i], target=endpoints[j], weight='weight'
+        )
+        length = nx.path_weight(graph, path, weight='weight')
+        if length > max_length:
+          max_length = length
+          longest_path = path
+      except nx.NetworkXNoPath:
+        continue
+
+  if max_length == -1.0 and endpoints:
+    longest_path = [endpoints[0]]
+    max_length = 0.0
+    print("isolated pixel / no good graph")
+  print(max_length)
+  return longest_path, max_length

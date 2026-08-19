@@ -4,8 +4,11 @@ from skimage.morphology import medial_axis
 from sine_river import sin_river
 from rasterize import poly_to_raster
 from geotester import load_river_polygon
+from SplineFit import fit_spline
+from skel_overlay import skel_river_overlay
+from find_longest import find_longest_skeleton_path
 
-#globals, pixel size = resolution, pad = border thickness
+#pixel size = resolution, pad = border thickness
 pixel_size = 1.0 # meters
 pad = 10 #pixels
 
@@ -22,16 +25,21 @@ skel_line, distance_map = medial_axis(raster_mask, return_distance=True)
 
 width_along_centerline = distance_map * skel_line
 
-fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+long_skel, len = find_longest_skeleton_path(skel_line, True)
+skel_river_overlay(raster_mask, skel_line,long_skel)
 
-axes[0].imshow(raster_mask, cmap='gray')
-axes[0].set_title("1. Original Raster Mask")
+x_smooth, y_smooth = fit_spline(long_skel)
 
-axes[1].imshow(distance_map, cmap='viridis')
-axes[1].set_title("2. Full Distance Map")
+# fig, axes = plt.subplots(1, 3, figsize=(12, 4))
 
-axes[2].imshow(width_along_centerline, cmap='magma')
-axes[2].set_title("3. Medial Axis Centerline")
+# axes[0].imshow(raster_mask, cmap='gray')
+# axes[0].set_title("1. Original Raster Mask")
 
-plt.tight_layout()
-plt.show()
+# axes[1].imshow(distance_map, cmap='viridis')
+# axes[1].set_title("2. Full Distance Map")
+
+# axes[2].imshow(width_along_centerline, cmap='magma')
+# axes[2].set_title("3. Medial Axis Centerline")
+
+# plt.tight_layout()
+# plt.show()

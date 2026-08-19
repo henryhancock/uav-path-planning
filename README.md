@@ -38,13 +38,14 @@ Minimum turn radius is derived from the cruise speed and bank angle limit.
 | `rasterize.py` | Converts the corridor polygon to a raster mask |
 | `main.py` | Medial-axis centerline extraction and distance transform |
 | `eBeeX.py` | Vehicle and camera parameters, turn-radius calculation |
-| `SplineFit.py` | Centerline smoothing (in progress) |
+| 'find_longest.py' | Finds longest path along the skeleton |
+| 'skel_overlay.py' | Overlays the skeleton and longest path onto the raster mask |
+| `SplineFit.py` | Centerline smoothing |
 
 ## Status
 
-**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model.
-
-**In progress:** spline fitting of the centerline, Dubins-path coverage planner, closed-loop tracking simulation and evaluation against a lawnmower baseline.
+**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, and spline fitting
+**In progress:** Dubins-path coverage planner, closed-loop tracking simulation and evaluation against a lawnmower baseline.
 
 **Out of scope:** wind modeling, physical flight testing. Evaluation is in simulation only.
 
