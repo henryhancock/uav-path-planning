@@ -12,7 +12,7 @@ Coverage path planning for a fixed-wing survey UAV flying curvilinear river corr
 5. Plan a Dubins-path coverage route constrained by the aircraft's minimum turn radius, with camera footprint and sidelap setting pass spacing.
 6. Time-parameterize the planned path into a reference trajectory and simulate a vehicle flying it with a path-following guidance law, measuring cross-track error.
 
-![Pipeline stages: raster mask, distance map, medial-axis centerline](docs/pipeline.png)
+![Pipeline stages: raster mask, distance map, medial-axis centerline](docs/DemoImage1.png)
 ## Vehicle model
 
 Parameters follow a **senseFly eBee X** with an **Aeria X** camera:
