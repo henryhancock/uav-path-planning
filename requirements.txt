@@ -1,0 +1,6 @@
+geopandas==1.1.4
+matplotlib==3.11.1
+numpy==2.5.2
+rasterio==1.5.1
+Shapely==2.1.2
+skimage==0.0
