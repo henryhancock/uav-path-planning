@@ -14,6 +14,12 @@ Coverage path planning for a fixed-wing survey UAV flying curvilinear river corr
 
 ![Pipeline stages: raster mask, distance map, medial-axis centerline](docs/DemoImage1.png)
 
+*Raster mask, distance heatmap, and MAT centerline of a fox river segment*
+
+![Longest Path overlaid on raster mask](docs/overlay.png)
+
+*True centerline of the river overlaid on the raster mask*
+
 ## Vehicle model
 
 Parameters follow a **senseFly eBee X** with an **Aeria X** camera:

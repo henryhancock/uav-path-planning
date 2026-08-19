@@ -23,7 +23,8 @@ def skel_river_overlay(raster_mask, width_along_centerline, longest_path=None, a
 
         plt.plot(xs_rot, ys_rot, color='cyan', linewidth=2.5)
 
-    plt.title("Raster Mask + Medial Axis + Longest Path (Rotated)")
+    plt.title("Raster Mask + Medial Axis + Longest Path")
     plt.axis("off")
     plt.tight_layout()
+    plt.savefig('docs/overlay.png')
     plt.show()
