@@ -32,6 +32,6 @@ def find_curvature(tck, n=2000):
     x, y = splev(u, tck)
     return u, np.array(x), np.array(y), kappa
 
-def offset_spline(spline_points, offset):
+def offset_spline(tck, offset, n = 4000):
     #at each point add +- offset in perpendicular direction, return 2 sets of tuples
     return 0

@@ -46,7 +46,8 @@ Minimum turn radius is derived from the cruise speed and bank angle limit.
 | `eBeeX.py` | Vehicle and camera parameters, turn-radius calculation |
 | `find_longest.py` | Finds longest path along the skeleton |
 | `skel_overlay.py` | Overlays the skeleton and longest path onto the raster mask |
-| `SplineFit.py` | Centerline smoothing |
+| `SplineTools.py` | Methods for fitting, analyzing, and offsetting splines |
+| `evaluator.py` | Evaluates width of the river along the planned path |
 
 ## Status
 

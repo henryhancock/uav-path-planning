@@ -5,7 +5,7 @@ from skimage.morphology import medial_axis
 from sine_river import sin_river
 from rasterize import poly_to_raster
 from geotester import load_river_polygon
-from SplineTools import fit_spline, find_curvature
+from SplineTools import fit_spline, find_curvature, offset_spline
 from skel_overlay import skel_river_overlay
 from find_longest import find_longest_skeleton_path
 from evaluator import evaluate_width
@@ -32,13 +32,16 @@ print("finding longest path...")
 long_skel, skel_len = find_longest_skeleton_path(skel_line, True)
 skel_river_overlay(raster_mask, skel_line,long_skel)
 
-widths = evaluate_width(width_along_centerline, long_skel, 127.6)
+widths, nmp = evaluate_width(width_along_centerline, long_skel, 127.6)
 
 
-tck, u = fit_spline(long_skel,10000)
+tck, u = fit_spline(long_skel,30000)
 u, x, y, k = find_curvature(tck)
 R = 1 / np.maximum(k, 1e-12)
 bad = R < 39.7
+
+if nmp.mean() > 0.05:
+    offset_spline(tck,127.6*.25)
 
 plot_all(raster_mask, distance_map, skel_line, long_skel, tck,
          width_along_centerline)

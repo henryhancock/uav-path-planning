@@ -6,7 +6,7 @@ venv/
 
 # data
 data/
-*.geojson
+# *.geojson
 *.gdb/
 *.tif
 *.zip
