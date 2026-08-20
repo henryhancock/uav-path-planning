@@ -15,3 +15,4 @@ w = 2 * h_operational * np.tan(FOV/2) #camera swath, 127 meters
 
 #other parameters
 sidelap_value = .25 #25% overlap
+print(w)

@@ -2,6 +2,13 @@ import numpy as np
 import rasterio.features
 
 def poly_to_raster(poly,pixel_size,pad):
+    """Converts river polygon to a raster mask and distance heat map
+    args:
+    poly: Shapely polygon of river segment
+    pixel_size: size of one pixel in meters
+    pad: number of pixel along outer edge of image
+    
+    """
     
     minx, miny, maxx, maxy = poly.bounds
     width_meters = maxx - minx

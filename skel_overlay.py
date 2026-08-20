@@ -1,6 +1,14 @@
 import matplotlib.pyplot as plt
 
 def skel_river_overlay(raster_mask, width_along_centerline, longest_path=None, alpha=0.75):
+    """Plots the centerline distance map and longest path along the raster mask of the river segment
+    args:
+    raster_mask : raster mask of river
+    width_along_centerline : centerline of river with associated width
+    longest_path : the longest path along the centerline. if provided, will be overlaid on the raster mask
+    alpha (float) : between 0 and 1. transparency of the overlaid segments.
+    
+    """
     #alpha = transparency of width overlay
 
     # Rotate both layers (transpose)
