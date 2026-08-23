@@ -19,3 +19,4 @@ def evaluate_width(width_along_centerline,long_skel, swath=127.6):
 
 def evaluate_path(flight_path, river_poly, swath):
     #sweep the swath over the path and compare against polygon
+    return 0
