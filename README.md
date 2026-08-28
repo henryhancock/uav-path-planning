@@ -31,7 +31,7 @@ Parameters follow a **senseFly eBee X** with an **Aeria X** camera:
 | Max Bank Angle | 30 deg |
 | Altitude AGL | 120 m |
 | Camera FOV | 56 deg |
-| Sidelap | 25% |
+| Sidelap | 60% |
 
 Minimum turn radius is derived from the cruise speed and bank angle limit.
 
@@ -39,21 +39,21 @@ Minimum turn radius is derived from the cruise speed and bank angle limit.
 
 | File | Purpose |
 | --- | --- |
-| `geotester.py` | Loads GeoJSON, reprojects to EPSG:26916, merges to a single polygon |
+| `preprocessor.py` | Loads GeoJSON, reprojects to EPSG:26916, merges to a single polygon |
 | `sine_river.py` | Generates synthetic sinusoidal river corridors for testing |
 | `rasterize.py` | Converts the corridor polygon to a raster mask |
 | `main.py` | Medial-axis centerline extraction and distance transform |
-| `eBeeX.py` | Vehicle and camera parameters, turn-radius calculation |
-| `find_longest.py` | Finds longest path along the skeleton |
-| `skel_overlay.py` | Overlays the skeleton and longest path onto the raster mask |
-| `SplineTools.py` | Methods for fitting, analyzing, and offsetting splines |
+| `e_bee_x.py` | Vehicle and camera parameters, turn-radius calculation |
+| `find_longest_path.py` | Finds longest path along the skeleton |
+| `spline_tools.py` | Methods for fitting, analyzing, offsetting splines, and joining |
 | `evaluator.py` | Evaluates width of the river along the planned path |
+| 'dubins_path.py' | Dubins path computation (not original work) |
 
 ## Status
 
-**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, spline fitting, and path offsets.
+**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, spline fitting, spline offsets, dubin's path connection between passes.
 
-**In progress:**  Dubins-path coverage planner, closed-loop tracking simulation and evaluation against a lawnmower baseline.
+**In progress:**  Spline offset overlap handling, flight visualizations, closed-loop tracking simulation and evaluation against a lawnmower baseline.
 
 **Out of scope:** wind modeling, physical flight testing. Evaluation is in simulation only.
 

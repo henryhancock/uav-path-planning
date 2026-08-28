@@ -1,6 +1,6 @@
 from evaluator import test_river
 from plot_path import plot_river_path
-from eBeeX import compute_parameters
+from e_bee_x import compute_parameters
 
 pixel_size = 1.0  # meters
 pad = 10  # pixels

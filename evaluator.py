@@ -5,8 +5,8 @@ from skimage.morphology import medial_axis
 from sine_river import sin_river
 from rasterize import poly_to_raster
 from preprocessor import load_river_polygon
-from SplineTools import fit_spline, find_curvature, offset_spline, join_paths
-from find_longest import find_longest_skeleton_path
+from spline_tools import fit_spline, find_curvature, offset_spline, join_paths
+from find_longest_path import find_longest_skeleton_path
 from scipy.interpolate import splev, splprep
 
 from shapely.geometry import LineString
