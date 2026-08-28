@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import splev, splprep
 import numpy.linalg
+from dubins_path import dubins_path, sample_dubins_path
 
 # river x vals are not strictly increasing, using parametric spline fit
 def fit_spline(river_points, smoothing=0, degree=3):
@@ -62,7 +63,7 @@ def offset_spline(tck, offset, n = 4000):
 
     return l_r_splines
 
-def join_paths(left, right, tck_l, tck_r, R_min):
+def join_paths(left, right, tck_l, tck_r, r_min):
     """ connect two splines given a minimum turn radius
     args:
     left : positional data for left offset
@@ -71,33 +72,24 @@ def join_paths(left, right, tck_l, tck_r, R_min):
     """
     n = 100
     end_l, end_r = left[-1], right[-1]
-    P = (end_l + end_r) / 2
-    R = np.linalg.norm(end_l - P)
 
-    start_angle = np.arctan2(end_l[1] - P[1], end_l[0] - P[0])
-    
-    # Track direction vector to ensure cap loops forward
-    v_tangent = np.array(left[-1] - left[-2])
-    
-    # Determine correct sweep direction (+pi or -pi)
-    mid_angle = start_angle + np.pi / 2
-    v_mid = np.array([np.cos(mid_angle), np.sin(mid_angle)])
-    
-    if np.dot(v_mid, v_tangent) < 0:
-        end_angle = start_angle - np.pi
-    else:
-        end_angle = start_angle + np.pi
-        
-    # Generate semicircular coordinates
-    angles = np.linspace(start_angle, end_angle, n)
-    x = P[0] + R * np.cos(angles)
-    y = P[1] + R * np.sin(angles)
-    
-    connector = np.column_stack((x, y))
-    full_path = np.concatenate([left, connector[1:-1], right[::-1]], axis=0)
+    v_tangent_l = np.array(left[-1] - left[-2])
+    v_tangent_r = np.array(right[-1] - right[-2])
+
+    theta_l = np.arctan2(v_tangent_l[1], v_tangent_l[0])
+    theta_r = np.arctan2(v_tangent_r[1], v_tangent_r[0]) + np.pi
+
+    p1 = (end_l[0],end_l[1],theta_l)
+    p2 = (end_r[0],end_r[1],theta_r)
+
+
+
+    points, info = sample_dubins_path(p1, p2, r_min, step=0.5)
+
+    full_path = np.concatenate([left, points[1:-1, :2], right[::-1]], axis=0)
 
     full_path_spline = fit_spline(full_path)
 
-    return (full_path, full_path_spline, connector)
+    return (full_path, full_path_spline, points)
 
     

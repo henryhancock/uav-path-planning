@@ -1,47 +1,14 @@
-from shapely.geometry import Polygon
-import numpy as np
-import matplotlib.pyplot as plt
-from skimage.morphology import medial_axis
-from sine_river import sin_river
-from rasterize import poly_to_raster
-from geotester import load_river_polygon
-from SplineTools import fit_spline, find_curvature, offset_spline
-from skel_overlay import skel_river_overlay
-from find_longest import find_longest_skeleton_path
-from evaluator import evaluate_width
-from river_plots import plot_all
+from evaluator import test_river
+from plot_path import plot_river_path
+from eBeeX import compute_parameters
+
+pixel_size = 1.0  # meters
+pad = 10  # pixels
 
 
-pixel_size = 1.0 # meters
-pad = 10 #pixels
+swath, r_min, offset = compute_parameters(15, 30, 56,120,60)
 
+result = test_river(river_data="curved_river.geojson", pixel_size=pixel_size, pad=pad, swath=swath,
+                     r_min=r_min, offset=offset)
 
-print("loading river data...")
-riv_poly = load_river_polygon("fox_snippet.geojson")
-
-print("rasterizing river polygon...")
-raster_mask,transform = poly_to_raster(riv_poly,pixel_size,pad)
-
-
-print("running medial axis transform on river...")
-skel_line, distance_map = medial_axis(raster_mask, return_distance=True)
-width_along_centerline = distance_map * skel_line
-
-
-print("finding longest path...")
-long_skel, skel_len = find_longest_skeleton_path(skel_line, True)
-skel_river_overlay(raster_mask, skel_line,long_skel)
-
-widths, nmp = evaluate_width(width_along_centerline, long_skel, 127.6)
-
-
-tck, u = fit_spline(long_skel,30000)
-u, x, y, k = find_curvature(tck)
-R = 1 / np.maximum(k, 1e-12)
-bad = R < 39.7
-
-if nmp.mean() > 0.05:
-    offset_spline(tck,127.6*.25)
-
-plot_all(raster_mask, distance_map, skel_line, long_skel, tck,
-         width_along_centerline)
+plot_river_path(result["river_polygon"], result["flight_path"])

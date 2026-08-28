@@ -51,9 +51,9 @@ Minimum turn radius is derived from the cruise speed and bank angle limit.
 
 ## Status
 
-**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, and spline fitting
+**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, spline fitting, and path offsets.
 
-**In progress:** Spline offsets, Dubins-path coverage planner, closed-loop tracking simulation and evaluation against a lawnmower baseline.
+**In progress:**  Dubins-path coverage planner, closed-loop tracking simulation and evaluation against a lawnmower baseline.
 
 **Out of scope:** wind modeling, physical flight testing. Evaluation is in simulation only.
 
