@@ -32,7 +32,7 @@ def compute_parameters(airspeed, max_bank, sensor_FOV, AGL, sidelap_pct):
 
     swath = 2 * AGL * np.tan(np.radians(sensor_FOV / 2))
     r_min = (airspeed**2) / (9.81 * np.tan(np.radians(max_bank)))
-    offset = (swath / 2) * (1 - sidelap_pct / 100)
+    offset = (swath) * (1 - sidelap_pct / 100)
 
     return swath, r_min, offset
 
