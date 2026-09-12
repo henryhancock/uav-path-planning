@@ -14,6 +14,7 @@ def generate_lawnmower_points(offset, r_min, river_polygon):
 
     actual_spacing = width_meters / (num_passes - 1)
     print("this requires ", num_passes, "passes at an offset of ", actual_spacing)
+    print("distance flown in passes is ", (1/1000)*(num_passes*height_meters), "kilometers")
     passes = []
     for i in range(num_passes):
         x_i = minx + i * actual_spacing

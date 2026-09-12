@@ -25,13 +25,12 @@ def evaluate_width(width_along_centerline,long_skel, swath=127.6):
     needs_multiple_passes = widths > swath
     print(f"swath {swath:.1f} m, river width {widths.min():.0f}-{widths.max():.0f} m")
     print(f"{100*needs_multiple_passes.mean():.1f}% of centerline wider than one swath")
-    
+
     return widths, needs_multiple_passes
 
 def evaluate_path(flight_path, river_poly, swath):
 
     path = LineString(flight_path)
-    print("simulating flight...")
     coverage = path.buffer(swath/2)
 
     covered_area_polygon = river_poly.intersection(coverage)
@@ -39,10 +38,8 @@ def evaluate_path(flight_path, river_poly, swath):
     total_river_area = river_poly.area
     percent_river_covered = 100 * covered_area_polygon.area / river_poly.area
 
-    print(f"the total river area is {total_river_area:,.0f} square meters")
-    print(f"path length {path.length:,.0f} m")
-    print(f"this path covers {percent_river_covered:.1f}% of the river corridor")
-    return percent_river_covered, covered_area_polygon
+    print(f"path length {path.length:,.0f} m, covers {percent_river_covered:.1f}% of river corridor ({total_river_area:,.0f} sq m)")
+    return percent_river_covered, covered_area_polygon, path.length
 
 def test_river(river_data=None, river_polygon=None, pixel_size=1, pad=10, swath=120, offset=40, r_min = 40, n_samples=2000):
     """Runs the full pipeline: raster -> skeleton -> spline -> evaluate.
@@ -51,26 +48,19 @@ def test_river(river_data=None, river_polygon=None, pixel_size=1, pad=10, swath=
     river_polygon : an already-built shapely Polygon (e.g. from sin_river), skips geotester
     """
     if river_polygon is None:
-        print("Loading river data...")
         river_polygon = load_river_polygon(river_data)
 
-    print("Rasterizing river polygon...")
     rasterized_river, origin = poly_to_raster(river_polygon, pixel_size, pad)
 
-    print("Running medial axis transform...")
     skeleton_line, distance_map = medial_axis(rasterized_river, return_distance=True)
     width_along_centerline = distance_map * skeleton_line * pixel_size
 
-    print("Finding longest path...")
     long_skel, skel_len = find_longest_skeleton_path(skeleton_line, True)
 
-    print("Evaluating width...")
     widths, needs_multiple_passes = evaluate_width(width_along_centerline,
                                                    long_skel, swath)
 
-    print("Fitting spline...")
     tck, u = fit_spline(long_skel,10000)
-
 
     l_spline,r_spline, left, right = offset_spline(tck, 30, 4000)
     fp,fps,p = join_paths(left, right, l_spline[0], r_spline[0],r_min)
@@ -83,14 +73,11 @@ def test_river(river_data=None, river_polygon=None, pixel_size=1, pad=10, swath=
     y = maxy + pad * pixel_size - r * pixel_size
     flight_path = np.column_stack([x, y])
 
-    print("Evaluating the flight path...")
-    pct, covered = evaluate_path(flight_path, river_polygon, swath)
+    pct, covered, path_length = evaluate_path(flight_path, river_polygon, swath)
 
-    print("path  ", LineString(flight_path).bounds)
-    print("river ", river_polygon.bounds)
     return {
         "coverage_pct": pct,
-        "path_length_m": skel_len * pixel_size,
+        "path_length_m": path_length,
         "widths": widths,
         "frac_needing_multipass": float(needs_multiple_passes.mean()),
         "river_polygon": river_polygon,

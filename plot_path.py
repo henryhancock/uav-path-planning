@@ -10,11 +10,12 @@ def plot_river_path(river_polygon, flight_path, title="River coverage path"):
         ix, iy = interior.xy
         ax.fill(ix, iy, color="white")
 
-    ax.plot(flight_path[:, 0], flight_path[:, 1], color="red", linewidth=1.5, label="Flight path")
+    ax.plot(flight_path[:, 0], flight_path[:, 1], color="red", linewidth=1.5,alpha=0.4, label="Flight path")
 
     ax.set_aspect("equal")
     ax.set_xlabel("Easting (m)")
     ax.set_ylabel("Northing (m)")
     ax.set_title(title)
     ax.legend()
+    plt.savefig('my_plot.png', dpi=300, bbox_inches='tight')
     plt.show()
