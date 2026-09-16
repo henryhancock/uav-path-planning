@@ -1,18 +1,13 @@
 import numpy as np
 
-# stated specs
+v_operational = 15  # m/s
+h_operational = 120  # m
+theta_max = np.radians(30)  # radians
+g = 9.81  # m/s^2
 
-v_operational = 15 #m/s
-h_operational = 120 #m
-theta_max = np.radians(30) #radians
-g = 9.81 #m/s^2
+FOV = np.radians(56)  # radians, FOV of camera
 
-
-FOV = np.radians(56) #radians, FOV of camera
-
-
-#other parameters
-sidelap_value = .60 #25% overlap
+sidelap_value = .60
 
 
 def compute_parameters(airspeed, max_bank, sensor_FOV, AGL, sidelap_pct):

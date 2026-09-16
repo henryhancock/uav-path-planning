@@ -14,7 +14,6 @@ def fit_spline(river_points, smoothing=0, degree=3):
     """
     x, y = zip(*river_points)
     tck, u = splprep([x, y], s=smoothing, k=degree)
-    #tck defines spline rule input -> output
     return tck, u
 
 def find_curvature(tck, n=2000):
@@ -54,7 +53,6 @@ def offset_spline(tck, offset, n = 4000):
     ux, uy = dx / mag, dy / mag
     nx, ny = -uy, ux
 
-    # np arrays
     left = np.column_stack((x + offset * nx, y + offset * ny))
     right = np.column_stack((x - offset * nx, y - offset * ny))
 

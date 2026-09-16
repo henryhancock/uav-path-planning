@@ -16,7 +16,7 @@ def find_longest_skeleton_path(skeleton, use_euclidean=True):
 
   for r, c in pixel_set:
     graph.add_node((r, c))
-    # only forward / down to avoid repeats)
+    # only forward/down neighbors, so each edge is only added once
     for dr, dc in [(0, 1), (1, -1), (1, 0), (1, 1)]:
       nr, nc = r + dr, c + dc
       if (nr, nc) in pixel_set:

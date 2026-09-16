@@ -5,15 +5,16 @@ from pyproj import Transformer
 from mavsdk import System
 from mavsdk.mission import MissionItem, MissionPlan
 
+from main import get_vehicle_parameters, run_spline_path
+from preprocessor import load_river_polygon
+
 # home [-88.3163409   41.91618079]
 # make px4_sitl gz_rc_cessna
 # cd ~/PX4-Autopilot && export PX4_HOME_LAT=41.91618079 PX4_HOME_LON=-88.3163409 PX4_HOME_ALT=205 && make px4_sitl gz_rc_cessna
 # cd ~/PX4-Autopilot && export PX4_HOME_LAT=41.91618079 PX4_HOME_LON=-88.3163409 PX4_HOME_ALT=205 PX4_SIM_SPEED_FACTOR=5 && make px4_sitl gz_rc_cessna
-# Import simplified_path from your local file
-from main import simplified_path
 
-VELOCITY = 15.0             #  cruise speed (meters per second)
-AGL = 120.0                 #  altitude (meters above ground level)
+VELOCITY = 15.0              # cruise speed (meters per second)
+AGL = 120.0                  # altitude (meters above ground level)
 ACCEPTED_RADIUS = 20.0       # acceptable radius around point to be considered a hit
 
 def return_to_global(flight_path, out_path, crs_in=26916, crs_out=4326):
@@ -31,7 +32,14 @@ def return_to_global(flight_path, out_path, crs_in=26916, crs_out=4326):
 
     return global_path
 
-coord_list = return_to_global(simplified_path, "waypoints.csv")
+
+def build_flight_path(geojson_path="curved_river.geojson", pixel_size=1.0, pad=10):
+    swath, r_min, offset = get_vehicle_parameters()
+    river_polygon = load_river_polygon(geojson_path)
+    return run_spline_path(river_polygon, pixel_size, pad, swath, offset, r_min)["flight_path"]
+
+
+coord_list = return_to_global(build_flight_path(), "waypoints.csv")
 
 
 async def run():
@@ -49,10 +57,8 @@ async def run():
     print(f"Processing {len(coord_list)} waypoints...")
     mission_items = []
 
-    # Structure the mission commands explicitly for fixed-wing behaviors
     for index, (lon, lat) in enumerate(coord_list):
         if index == 0:
-            # first point is takeoff
             action = MissionItem.VehicleAction.TAKEOFF
         else:
             action = MissionItem.VehicleAction.NONE
@@ -82,7 +88,6 @@ async def run():
     await drone.mission.upload_mission(mission_plan)
     print("Upload complete!")
 
-    # end behavior
     await drone.mission.set_return_to_launch_after_mission(True)
 
     print("Overriding catapult parameters for Runway Takeoff Mode...")

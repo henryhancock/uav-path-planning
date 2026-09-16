@@ -13,9 +13,6 @@ def sin_river(amplitude = 100.0, length = 1000.0, wavelength = 500.0,
     
     
     """
-
-    # n = # samples along bank
-
     bottom = []
     center = []
     top = []

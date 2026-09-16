@@ -21,7 +21,6 @@ def poly_to_raster(poly,pixel_size,pad):
 )
     grid_width = int(np.ceil(width_meters / pixel_size)) + 2 * pad
     grid_height = int(np.ceil(height_meters / pixel_size)) + 2 * pad
-    #reads map and plots
     raster_mask = rasterio.features.rasterize(
         [poly],
         out_shape=(grid_height, grid_width),

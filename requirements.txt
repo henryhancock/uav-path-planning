@@ -1,7 +1,11 @@
 geopandas==1.1.4
 matplotlib==3.10.6
+mavsdk==3.17.2
+networkx==3.6.1
 numpy==2.2.6
+pyproj==3.7.2
 rasterio==1.5.1
+rdp==0.8
 scikit-image==0.26.0
 scipy==1.16.1
 shapely==2.1.2
