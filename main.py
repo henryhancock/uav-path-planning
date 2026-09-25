@@ -8,6 +8,10 @@ from lawnmower import generate_lawnmower
 from plot_path import plot_river_path
 from preprocessor import load_river_polygon
 
+# example usage command:
+# python main.py fox_snippet.geojson --pixel-size 1.0 --pad 10 --plot
+# will run fox_snippet.geojson with pixel size of 1.0, pad of 10, and it will plot the path
+
 
 def get_vehicle_parameters(airspeed=15, max_bank=30, fov=56, agl=120, sidelap=60):
     swath, r_min, offset = compute_parameters(airspeed, max_bank, fov, agl, sidelap)

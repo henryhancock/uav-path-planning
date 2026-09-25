@@ -9,9 +9,15 @@ from main import get_vehicle_parameters, run_spline_path
 from preprocessor import load_river_polygon
 
 # home [-88.3163409   41.91618079]
+
 # make px4_sitl gz_rc_cessna
+
 # cd ~/PX4-Autopilot && export PX4_HOME_LAT=41.91618079 PX4_HOME_LON=-88.3163409 PX4_HOME_ALT=205 && make px4_sitl gz_rc_cessna
+
 # cd ~/PX4-Autopilot && export PX4_HOME_LAT=41.91618079 PX4_HOME_LON=-88.3163409 PX4_HOME_ALT=205 PX4_SIM_SPEED_FACTOR=5 && make px4_sitl gz_rc_cessna
+
+# cd ~ ./QGroundControl-x86_64.AppImage
+
 
 VELOCITY = 15.0              # cruise speed (meters per second)
 AGL = 120.0                  # altitude (meters above ground level)
