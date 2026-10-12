@@ -10,7 +10,8 @@ Coverage path planning for a fixed-wing survey UAV flying curvilinear river corr
 4. Fit a smooth reference path to the centerline.
 5. Plan a Dubins-path coverage route constrained by the aircraft's minimum turn radius, with camera footprint and sidelap setting pass spacing.
 6. Evaluate coverage percentage and path length against a fixed-width lawnmower baseline flown over the same corridor.
-7. *(planned)* Time-parameterize the planned path into a reference trajectory and simulate a vehicle flying it with a path-following guidance law, measuring cross-track error.
+7. Export the planned path as a MAVLink mission and fly it in PX4 software-in-the-loop simulation.
+8. *(planned)* Time-parameterize the planned path into a reference trajectory and simulate a vehicle flying it with a path-following guidance law, measuring cross-track error.
 
 ![Pipeline stages: raster mask, distance map, medial-axis centerline](docs/DemoImage1.png)
 
@@ -69,7 +70,7 @@ while maintaining approximately 94% corridor coverage.
 
 ## Status
 
-**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, spline fitting, spline offsets, Dubins path connection between passes, fixed-width lawnmower baseline generation, coverage/path-length evaluation, and comparison plotting between the lawnmower and spline-offset paths.
+**Working:** GIS ingestion, reprojection, rasterization, centerline extraction, distance transform, vehicle parameter model, centerline smoothing, spline fitting, spline offsets, Dubins path connection between passes, fixed-width lawnmower baseline generation, coverage/path-length evaluation, and comparison plotting between the lawnmower and spline-offset paths. Path has been flown with PX4 SITL under varying wind disturbance to measure cross-track error.
 
 **Known limitation:** offset passes can locally exceed the aircraft's minimum turn radius in tight bends, since a constant offset distance tightens the effective radius on the inside of a curve. Curvature-aware (variable-width) offsetting is planned as the principled fix.
 

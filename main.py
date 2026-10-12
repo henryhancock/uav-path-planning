@@ -7,6 +7,8 @@ from evaluator import evaluate_path, test_river
 from lawnmower import generate_lawnmower
 from plot_path import plot_river_path
 from preprocessor import load_river_polygon
+from evaluator import time_parameterize
+import matplotlib.pyplot as plt
 
 # example usage command:
 # python main.py fox_snippet.geojson --pixel-size 1.0 --pad 10 --plot
@@ -37,6 +39,9 @@ def run_spline_path(river_polygon, pixel_size, pad, swath, offset, r_min):
         r_min=r_min,
     )
     flight_path = result["flight_path"]
+    t, h, c = time_parameterize(15, flight_path)
+    plt.plot(t, c)
+
     simplified_path = rdp(flight_path, epsilon=1.0)
     print(f"Reduced waypoints from {len(flight_path)} to {len(simplified_path)}")
     result["simplified_path"] = simplified_path

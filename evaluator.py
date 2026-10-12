@@ -2,6 +2,7 @@ import numpy as np
 from scipy.interpolate import splev
 from shapely.geometry import LineString
 from skimage.morphology import medial_axis
+import matplotlib.pyplot as plt
 
 from find_longest_path import find_longest_skeleton_path
 from preprocessor import load_river_polygon
@@ -112,3 +113,23 @@ def test_river(river_data=None, river_polygon=None, pixel_size=1, pad=10, swath=
         "river_polygon": river_polygon,
         "flight_path": flight_path,
     }
+def time_parameterize(velocity, flight_path):
+    x = flight_path[:,0]
+    y = flight_path[:,1]
+
+    dx = np.diff(x)
+    dy = np.diff(y)
+    
+    segment_headings = np.arctan2(dy, dx)
+    
+    headings = np.concatenate((segment_headings, [segment_headings[-1]]))
+    
+    segment_distances = np.sqrt(dx**2 + dy**2)
+    cumulative_distance = np.concatenate(([0.0], np.cumsum(segment_distances)))
+    
+    # 5. Compute timestamps (Time = Distance / Velocity)
+    timestamps = cumulative_distance / velocity
+    plt.plot(timestamps, cumulative_distance)
+    return timestamps, headings, cumulative_distance
+
+    
